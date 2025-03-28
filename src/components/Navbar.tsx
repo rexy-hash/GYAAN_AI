@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Bell, Search, Settings, UserCircle } from 'lucide-react';
+import { Bell, Settings, UserCircle } from 'lucide-react';
 import { Button } from './ui/button';
-import { Input } from './ui/input';
+import SearchBar from './SearchBar';
 
 const Navbar: React.FC = () => {
   return (
@@ -13,13 +13,7 @@ const Navbar: React.FC = () => {
       </div>
       
       <div className="flex-grow mx-8 max-w-2xl">
-        <div className="relative">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input 
-            placeholder="Search AI models, tools, papers..." 
-            className="pl-8 bg-secondary/50 border-0 focus-visible:ring-1"
-          />
-        </div>
+        <SearchBar />
       </div>
       
       <div className="flex items-center space-x-2">

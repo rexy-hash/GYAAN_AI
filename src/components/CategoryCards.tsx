@@ -3,13 +3,15 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { MessageSquare, Image, Code2, FileText, Database, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useCategories } from '@/hooks/useCategories';
+import { Skeleton } from './ui/skeleton';
 
 interface CategoryCardProps {
   title: string;
   count: number;
   growth: number;
   color: string;
-  icon: React.ElementType;
+  iconName: string;
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ 
@@ -17,9 +19,27 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   count, 
   growth, 
   color, 
-  icon: Icon 
+  iconName 
 }) => {
   const isPositiveGrowth = growth >= 0;
+  
+  // Map icon name to component
+  const Icon = () => {
+    switch(iconName) {
+      case 'MessageSquare':
+        return <MessageSquare className={`h-5 w-5 ${color.replace('bg-', 'text-')}`} />;
+      case 'Image':
+        return <Image className={`h-5 w-5 ${color.replace('bg-', 'text-')}`} />;
+      case 'Code2':
+        return <Code2 className={`h-5 w-5 ${color.replace('bg-', 'text-')}`} />;
+      case 'FileText':
+        return <FileText className={`h-5 w-5 ${color.replace('bg-', 'text-')}`} />;
+      case 'Database':
+        return <Database className={`h-5 w-5 ${color.replace('bg-', 'text-')}`} />;
+      default:
+        return <MessageSquare className={`h-5 w-5 ${color.replace('bg-', 'text-')}`} />;
+    }
+  };
   
   return (
     <Card className="overflow-hidden">
@@ -27,7 +47,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div className={`p-2 rounded-md ${color.replace('bg-', 'bg-').replace('-dark', '-light')}`}>
-            <Icon className={`h-5 w-5 ${color.replace('bg-', 'text-')}`} />
+            <Icon />
           </div>
           <span className={cn(
             "flex items-center text-sm",
@@ -51,57 +71,51 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   );
 };
 
+const CategoryCardSkeleton = () => (
+  <Card className="overflow-hidden">
+    <div className="h-1 bg-gray-200"></div>
+    <CardHeader className="pb-2">
+      <div className="flex justify-between items-start">
+        <Skeleton className="h-9 w-9 rounded-md" />
+        <Skeleton className="h-5 w-12" />
+      </div>
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-6 w-28 mb-2" />
+      <Skeleton className="h-4 w-36" />
+    </CardContent>
+  </Card>
+);
+
 const CategoryCards: React.FC = () => {
-  const categories = [
-    {
-      title: "NLP Models",
-      count: 24,
-      growth: 12,
-      color: "bg-aiblue-dark",
-      icon: MessageSquare
-    },
-    {
-      title: "Computer Vision",
-      count: 18,
-      growth: 9,
-      color: "bg-aipurple-dark",
-      icon: Image
-    },
-    {
-      title: "Code Models",
-      count: 15,
-      growth: -3,
-      color: "bg-aiorange-dark",
-      icon: Code2
-    },
-    {
-      title: "Content Generation",
-      count: 29,
-      growth: 21,
-      color: "bg-aigreen-dark",
-      icon: FileText
-    },
-    {
-      title: "Multimodal",
-      count: 12,
-      growth: 42,
-      color: "bg-aiteal-dark",
-      icon: Database
-    }
-  ];
+  const { data: categories, isLoading, error } = useCategories();
+
+  if (error) {
+    return (
+      <div className="p-4 border border-red-300 bg-red-50 rounded-md text-red-600">
+        Error loading categories: {error instanceof Error ? error.message : 'Unknown error'}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      {categories.map((category) => (
-        <CategoryCard
-          key={category.title}
-          title={category.title}
-          count={category.count}
-          growth={category.growth}
-          color={category.color}
-          icon={category.icon}
-        />
-      ))}
+      {isLoading ? (
+        // Show skeletons while loading
+        Array(5).fill(0).map((_, i) => <CategoryCardSkeleton key={i} />)
+      ) : (
+        // Show actual categories when loaded
+        categories?.map((category) => (
+          <CategoryCard
+            key={category.id}
+            title={category.title}
+            count={category.count}
+            growth={category.growth}
+            color={category.color}
+            iconName={category.icon}
+          />
+        ))
+      )}
     </div>
   );
 };
