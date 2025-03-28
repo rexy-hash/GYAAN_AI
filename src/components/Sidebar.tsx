@@ -15,22 +15,26 @@ import {
   Image
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link, useLocation } from 'react-router-dom';
 
 interface SidebarItemProps {
   icon: React.ElementType;
   label: string;
   isActive?: boolean;
   count?: number;
+  to: string;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ 
   icon: Icon, 
   label, 
   isActive = false,
-  count
+  count,
+  to
 }) => {
   return (
-    <div 
+    <Link 
+      to={to}
       className={cn(
         "flex items-center px-3 py-2 rounded-md cursor-pointer transition-colors",
         isActive 
@@ -50,7 +54,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           {count}
         </span>
       )}
-    </div>
+    </Link>
   );
 };
 
@@ -59,6 +63,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
+  const location = useLocation();
+  
   return (
     <div className={cn(
       "flex flex-col h-screen bg-sidebar transition-all duration-300",
@@ -78,10 +84,21 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
       )}
       
       <div className="flex flex-col flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        <SidebarItem icon={Home} label="Dashboard" isActive={true} />
-        <SidebarItem icon={BookOpen} label="Discoveries" count={12} />
-        <SidebarItem icon={BarChart2} label="Trends" />
-        <SidebarItem icon={Star} label="Favorites" count={5} />
+        <SidebarItem 
+          icon={Home} 
+          label="Dashboard" 
+          isActive={location.pathname === '/dashboard'} 
+          to="/dashboard" 
+        />
+        <SidebarItem 
+          icon={BookOpen} 
+          label="Discoveries" 
+          count={12} 
+          isActive={location.pathname === '/discoveries'} 
+          to="/discoveries" 
+        />
+        <SidebarItem icon={BarChart2} label="Trends" to="/trends" />
+        <SidebarItem icon={Star} label="Favorites" count={5} to="/favorites" />
         
         <div className="mt-6 mb-2 px-3">
           <h3 className={cn(
@@ -92,14 +109,14 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           </h3>
         </div>
         
-        <SidebarItem icon={MessageSquare} label="NLP Models" count={8} />
-        <SidebarItem icon={Image} label="Computer Vision" count={7} />
-        <SidebarItem icon={Code2} label="Code Models" count={4} />
-        <SidebarItem icon={FileText} label="Content Generation" count={6} />
-        <SidebarItem icon={Database} label="Multimodal" count={3} />
+        <SidebarItem icon={MessageSquare} label="NLP Models" count={8} to="/category/nlp-models" />
+        <SidebarItem icon={Image} label="Computer Vision" count={7} to="/category/computer-vision" />
+        <SidebarItem icon={Code2} label="Code Models" count={4} to="/category/code-models" />
+        <SidebarItem icon={FileText} label="Content Generation" count={6} to="/category/content-generation" />
+        <SidebarItem icon={Database} label="Multimodal" count={3} to="/category/multimodal" />
         
         <div className="mt-auto">
-          <SidebarItem icon={Settings} label="Settings" />
+          <SidebarItem icon={Settings} label="Settings" to="/settings" />
         </div>
       </div>
     </div>
