@@ -11,6 +11,7 @@ export interface AIModel {
   stars: number;
   date: string;
   createdAt: string; // ISO Date string
+  isSubscribed?: boolean; // Added to track subscription status
 }
 
 export interface AICategory {

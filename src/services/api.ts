@@ -1,4 +1,3 @@
-
 import { AIModel, AICategory, TrendData, APIResponse } from "@/types/api";
 import { MessageSquare, Image, Code2, FileText, Database } from "lucide-react";
 
@@ -16,6 +15,7 @@ const mockModels: AIModel[] = [
     stars: 2456,
     date: "2 days ago",
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   },
   {
     id: "2",
@@ -29,6 +29,7 @@ const mockModels: AIModel[] = [
     stars: 1728,
     date: "Yesterday",
     createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   },
   {
     id: "3",
@@ -42,6 +43,7 @@ const mockModels: AIModel[] = [
     stars: 1356,
     date: "3 days ago",
     createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   },
   {
     id: "4",
@@ -55,6 +57,7 @@ const mockModels: AIModel[] = [
     stars: 1984,
     date: "1 week ago",
     createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   },
   {
     id: "5",
@@ -68,6 +71,7 @@ const mockModels: AIModel[] = [
     stars: 894,
     date: "4 days ago",
     createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   },
   {
     id: "6",
@@ -81,6 +85,7 @@ const mockModels: AIModel[] = [
     stars: 1642,
     date: "2 days ago",
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   },
   {
     id: "7",
@@ -94,6 +99,7 @@ const mockModels: AIModel[] = [
     stars: 1245,
     date: "5 days ago",
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   },
   {
     id: "8",
@@ -107,6 +113,7 @@ const mockModels: AIModel[] = [
     stars: 980,
     date: "1 week ago",
     createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    isSubscribed: false,
   }
 ];
 
@@ -181,6 +188,9 @@ const generateTrendData = (): TrendData[] => {
 
 const mockTrendData = generateTrendData();
 
+// Store user subscriptions
+let userSubscriptions: string[] = [];
+
 // API class to handle data fetching
 class API {
   // Get all models
@@ -200,6 +210,10 @@ class API {
     
     const model = mockModels.find(m => m.id === id);
     
+    if (model) {
+      model.isSubscribed = userSubscriptions.includes(model.id);
+    }
+    
     return {
       data: model || null,
       error: model ? null : "Model not found"
@@ -210,7 +224,11 @@ class API {
   async getModelsByCategory(category: string): Promise<APIResponse<AIModel[]>> {
     await new Promise(resolve => setTimeout(resolve, 400));
     
-    const filteredModels = mockModels.filter(m => m.category === category);
+    const filteredModels = mockModels.filter(m => m.category === category)
+      .map(model => ({
+        ...model,
+        isSubscribed: userSubscriptions.includes(model.id)
+      }));
     
     return {
       data: filteredModels,
@@ -222,7 +240,11 @@ class API {
   async getModelsBySource(source: AIModel['source']): Promise<APIResponse<AIModel[]>> {
     await new Promise(resolve => setTimeout(resolve, 400));
     
-    const filteredModels = mockModels.filter(m => m.source === source);
+    const filteredModels = mockModels.filter(m => m.source === source)
+      .map(model => ({
+        ...model,
+        isSubscribed: userSubscriptions.includes(model.id)
+      }));
     
     return {
       data: filteredModels,
@@ -239,7 +261,10 @@ class API {
       m => m.name.toLowerCase().includes(lowercaseQuery) || 
            m.description.toLowerCase().includes(lowercaseQuery) ||
            m.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
-    );
+    ).map(model => ({
+      ...model,
+      isSubscribed: userSubscriptions.includes(model.id)
+    }));
     
     return {
       data: searchResults,
@@ -276,10 +301,56 @@ class API {
     
     const latestModels = mockModels.filter(
       model => new Date(model.createdAt) >= sevenDaysAgo
-    );
+    ).map(model => ({
+      ...model,
+      isSubscribed: userSubscriptions.includes(model.id)
+    }));
     
     return {
       data: latestModels,
+      error: null
+    };
+  }
+
+  // Subscribe to a model
+  async subscribeToModel(modelId: string): Promise<APIResponse<boolean>> {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    
+    if (!userSubscriptions.includes(modelId)) {
+      userSubscriptions.push(modelId);
+    }
+    
+    return {
+      data: true,
+      error: null
+    };
+  }
+  
+  // Unsubscribe from a model
+  async unsubscribeFromModel(modelId: string): Promise<APIResponse<boolean>> {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    
+    userSubscriptions = userSubscriptions.filter(id => id !== modelId);
+    
+    return {
+      data: true,
+      error: null
+    };
+  }
+  
+  // Get all subscribed models
+  async getSubscribedModels(): Promise<APIResponse<AIModel[]>> {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const subscribedModels = mockModels
+      .filter(model => userSubscriptions.includes(model.id))
+      .map(model => ({
+        ...model,
+        isSubscribed: true
+      }));
+    
+    return {
+      data: subscribedModels,
       error: null
     };
   }

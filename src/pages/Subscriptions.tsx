@@ -1,19 +1,20 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/MySidebar';
-import { useParams } from 'react-router-dom';
-import { useModelsByCategory } from '@/hooks/useModels';
+import Sidebar from '@/components/Sidebar';
+import { useSubscribedModels } from '@/hooks/useModelSubscription';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { BookmarkPlus, Github, ArrowUpRight, FileText, ExternalLink, Star, Bell, BellOff } from 'lucide-react';
+import { BookmarkPlus, Github, ArrowUpRight, FileText, ExternalLink, Star, BellOff } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useModelSubscription } from '@/hooks/useModelSubscription';
 
 const ModelCard = ({ model }) => {
-  const { subscribeToModel, unsubscribeFromModel } = useModelSubscription();
+  const { unsubscribeFromModel } = useModelSubscription();
   
+  // Generate the source icon based on the source type
   const SourceIcon = () => {
     switch(model.source) {
       case 'GitHub':
@@ -31,12 +32,8 @@ const ModelCard = ({ model }) => {
     toast.success(`Added ${model.name} to bookmarks`);
   };
   
-  const handleSubscription = () => {
-    if (model.isSubscribed) {
-      unsubscribeFromModel.mutate(model.id);
-    } else {
-      subscribeToModel.mutate(model.id);
-    }
+  const handleUnsubscribe = () => {
+    unsubscribeFromModel.mutate(model.id);
   };
 
   return (
@@ -55,13 +52,10 @@ const ModelCard = ({ model }) => {
               variant="ghost" 
               size="icon" 
               className="h-8 w-8" 
-              onClick={handleSubscription}
-              disabled={subscribeToModel.isPending || unsubscribeFromModel.isPending}
+              onClick={handleUnsubscribe}
+              disabled={unsubscribeFromModel.isPending}
             >
-              {model.isSubscribed ? 
-                <BellOff className="h-4 w-4 text-primary" /> : 
-                <Bell className="h-4 w-4" />
-              }
+              <BellOff className="h-4 w-4 text-primary" />
             </Button>
             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleBookmark}>
               <BookmarkPlus className="h-4 w-4" />
@@ -120,34 +114,18 @@ const ModelCardSkeleton = () => (
   </Card>
 );
 
-const EmptyState = ({ categoryName }) => (
+const EmptyState = () => (
   <div className="text-center p-10 border border-dashed rounded-md border-gray-300">
-    <h3 className="text-xl font-semibold mb-2">No models found</h3>
+    <h3 className="text-xl font-semibold mb-2">No subscriptions yet</h3>
     <p className="text-muted-foreground mb-4">
-      There are currently no models listed under the {categoryName} category.
+      You haven't subscribed to any AI models yet. Browse the categories and click the bell icon to subscribe to models you're interested in.
     </p>
   </div>
 );
 
-const CategoryView = () => {
+const Subscriptions = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
-  const { categoryId } = useParams();
-  
-  const formattedCategoryName = categoryId ? 
-    categoryId.split('-').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ') : '';
-  
-  const apiCategoryName = formattedCategoryName;
-  
-  const { data: models, isLoading, error } = useModelsByCategory(apiCategoryName);
-
-  React.useEffect(() => {
-    console.log("CategoryView - categoryId:", categoryId);
-    console.log("CategoryView - formattedCategoryName:", formattedCategoryName);
-    console.log("CategoryView - apiCategoryName:", apiCategoryName);
-    console.log("CategoryView - models:", models);
-  }, [categoryId, models]);
+  const { data: models, isLoading, error } = useSubscribedModels();
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -159,23 +137,23 @@ const CategoryView = () => {
         <div className="flex-1 overflow-auto p-6">
           <div className="max-w-7xl mx-auto space-y-8">
             <div>
-              <h1 className="text-3xl font-bold mb-6">{formattedCategoryName} Models</h1>
+              <h1 className="text-3xl font-bold mb-6">My Subscriptions</h1>
               
               {error ? (
                 <div className="p-4 border border-red-300 bg-red-50 rounded-md text-red-600">
-                  Error loading models: {error instanceof Error ? error.message : 'Unknown error'}
+                  Error loading subscriptions: {error instanceof Error ? error.message : 'Unknown error'}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {isLoading ? (
-                    Array(6).fill(0).map((_, i) => <ModelCardSkeleton key={i} />)
+                    Array(3).fill(0).map((_, i) => <ModelCardSkeleton key={i} />)
                   ) : models && models.length > 0 ? (
                     models.map((model) => (
                       <ModelCard key={model.id} model={model} />
                     ))
                   ) : (
                     <div className="col-span-1 md:col-span-2 lg:col-span-3">
-                      <EmptyState categoryName={formattedCategoryName} />
+                      <EmptyState />
                     </div>
                   )}
                 </div>
@@ -188,4 +166,4 @@ const CategoryView = () => {
   );
 };
 
-export default CategoryView;
+export default Subscriptions;

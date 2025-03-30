@@ -1,7 +1,6 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/MySidebar';
 import CategoryCards from '@/components/CategoryCards';
 import RecentModels from '@/components/RecentModels';
 import TrendChart from '@/components/TrendChart';

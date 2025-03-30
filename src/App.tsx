@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Discoveries from "./pages/Discoveries";
 import CategoryView from "./pages/CategoryView";
+import Subscriptions from "./pages/Subscriptions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/index" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/discoveries" element={<Discoveries />} />
+          <Route path="/subscriptions" element={<Subscriptions />} />
           <Route path="/category/:categoryId" element={<CategoryView />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

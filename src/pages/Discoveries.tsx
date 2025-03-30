@@ -1,7 +1,6 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/MySidebar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
 import { useModels } from '@/hooks/useModels';
