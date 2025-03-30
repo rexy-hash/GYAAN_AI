@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BookmarkPlus, Github, ArrowUpRight, FileText, ExternalLink, Star } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from 'sonner';
 
 const ModelCard = ({ model }) => {
   // Generate the source icon based on the source type
@@ -25,6 +26,10 @@ const ModelCard = ({ model }) => {
     }
   };
 
+  const handleBookmark = () => {
+    toast.success(`Added ${model.name} to bookmarks`);
+  };
+
   return (
     <Card className="ai-card">
       <div className={`h-1 ${model.categoryColor}`}></div>
@@ -36,7 +41,7 @@ const ModelCard = ({ model }) => {
               <SourceIcon /> {model.source} • {model.date}
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleBookmark}>
             <BookmarkPlus className="h-4 w-4" />
           </Button>
         </div>
@@ -92,20 +97,39 @@ const ModelCardSkeleton = () => (
   </Card>
 );
 
+const EmptyState = ({ categoryName }) => (
+  <div className="text-center p-10 border border-dashed rounded-md border-gray-300">
+    <h3 className="text-xl font-semibold mb-2">No models found</h3>
+    <p className="text-muted-foreground mb-4">
+      There are currently no models listed under the {categoryName} category.
+    </p>
+  </div>
+);
+
 const CategoryView = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
   const { categoryId } = useParams();
   
-  // Format categoryId for API call (convert from route param format)
-  const formattedCategoryId = categoryId ? categoryId.replace(/-/g, ' ') : '';
+  // Format categoryId for display (convert from route param format)
+  const formattedCategoryName = categoryId ? 
+    categoryId.split('-').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ') : '';
   
-  // Get category name in title case for display
-  const categoryName = formattedCategoryId
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  // Format for API call - the API uses specific category names like "Multimodal"
+  // The categoryId from the URL will be like "multimodal"
+  const apiCategoryName = formattedCategoryName;
   
-  const { data: models, isLoading, error } = useModelsByCategory(formattedCategoryId);
+  // Use the hook with the formatted category name
+  const { data: models, isLoading, error } = useModelsByCategory(apiCategoryName);
+
+  // Debug for troubleshooting
+  React.useEffect(() => {
+    console.log("CategoryView - categoryId:", categoryId);
+    console.log("CategoryView - formattedCategoryName:", formattedCategoryName);
+    console.log("CategoryView - apiCategoryName:", apiCategoryName);
+    console.log("CategoryView - models:", models);
+  }, [categoryId, models]);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -117,7 +141,7 @@ const CategoryView = () => {
         <div className="flex-1 overflow-auto p-6">
           <div className="max-w-7xl mx-auto space-y-8">
             <div>
-              <h1 className="text-3xl font-bold mb-6">{categoryName} Models</h1>
+              <h1 className="text-3xl font-bold mb-6">{formattedCategoryName} Models</h1>
               
               {error ? (
                 <div className="p-4 border border-red-300 bg-red-50 rounded-md text-red-600">
@@ -127,10 +151,14 @@ const CategoryView = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {isLoading ? (
                     Array(6).fill(0).map((_, i) => <ModelCardSkeleton key={i} />)
-                  ) : (
-                    models?.map((model) => (
+                  ) : models && models.length > 0 ? (
+                    models.map((model) => (
                       <ModelCard key={model.id} model={model} />
                     ))
+                  ) : (
+                    <div className="col-span-1 md:col-span-2 lg:col-span-3">
+                      <EmptyState categoryName={formattedCategoryName} />
+                    </div>
                   )}
                 </div>
               )}

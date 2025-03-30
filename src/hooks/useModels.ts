@@ -31,13 +31,24 @@ export function useModelById(id: string) {
 }
 
 export function useModelsByCategory(category: string) {
+  // Debug log to check what category is being requested
+  console.log("useModelsByCategory - input category:", category);
+  
   return useQuery({
     queryKey: ["models", "category", category],
     queryFn: async () => {
-      const response = await api.getModelsByCategory(category);
+      // Convert route format "Category-Name" to API format "Category Name"
+      const formattedCategory = category;
+      console.log("useModelsByCategory - calling API with:", formattedCategory);
+      
+      const response = await api.getModelsByCategory(formattedCategory);
       if (response.error) {
         throw new Error(response.error);
       }
+      
+      // Log the response for debugging
+      console.log("useModelsByCategory - API response:", response);
+      
       return response.data;
     },
     enabled: !!category
