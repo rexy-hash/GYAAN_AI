@@ -1,118 +1,131 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { ModeToggle } from '@/components/ModeToggle';
+import { motion } from 'framer-motion';
+import { Robot, ArrowRight } from 'lucide-react';
 
 const Index = () => {
+  const [showIntro, setShowIntro] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Auto-redirect after 8 seconds
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+      // Wait for exit animation to complete
+      setTimeout(() => navigate('/dashboard'), 1000);
+    }, 8000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
+  const skipIntro = () => {
+    setShowIntro(false);
+    setTimeout(() => navigate('/dashboard'), 500);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-background border-b border-border/40">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <span className="text-2xl font-bold text-primary">AIScout</span>
-          </div>
-          <nav className="hidden md:flex space-x-4">
-            <Link to="/dashboard">
-              <Button variant="ghost">Dashboard</Button>
-            </Link>
-            <Link to="/discoveries">
-              <Button variant="ghost">Discoveries</Button>
-            </Link>
-            <Link to="/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link to="/signup">
-              <Button variant="primary">Sign Up</Button>
-            </Link>
-          </nav>
-          <div className="flex md:hidden">
-            <Button variant="ghost" size="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </Button>
-          </div>
-        </div>
-      </header>
+      {showIntro ? (
+        <motion.div
+          className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-background to-secondary/20 px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            className="relative mb-8"
+            animate={{ 
+              y: [0, -15, 0],
+              rotate: [0, -5, 0, 5, 0]
+            }}
+            transition={{ 
+              duration: 4,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          >
+            <div className="bg-primary rounded-full p-8 relative">
+              <Robot size={100} className="text-primary-foreground" />
+              <motion.div 
+                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-primary h-3 w-3 rounded-full"
+                animate={{ scale: [1, 1.5, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              />
+            </div>
+            <motion.div 
+              className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-full h-6 rounded-full bg-black/20 blur-md"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          </motion.div>
 
-      <main className="flex-1 bg-gradient-to-b from-background to-secondary/20">
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              Discover and track the latest AI models
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8">
-              Stay up-to-date with AI innovations, track new models, and get personalized recommendations
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold mb-6 text-center"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            Welcome to <span className="text-primary">AIScout</span>
+          </motion.h1>
+          
+          <motion.div
+            className="text-center max-w-xl"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <p className="text-lg mb-8">
+              Your personal AI discovery and tracking platform. We help you find, compare, and stay updated with the latest AI models and tools.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link to="/signup">
-                <Button size="lg" className="w-full sm:w-auto">Get Started</Button>
-              </Link>
-              <Link to="/login">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">Sign In</Button>
-              </Link>
+            
+            <div className="flex justify-center">
+              <Button onClick={skipIntro} className="flex items-center gap-2">
+                Skip intro <ArrowRight size={16} />
+              </Button>
             </div>
-          </div>
-        </section>
+          </motion.div>
 
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-card border border-border rounded-lg p-6 text-center">
-              <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 2v4"></path>
-                  <path d="M12 18v4"></path>
-                  <path d="m4.93 4.93 2.83 2.83"></path>
-                  <path d="m16.24 16.24 2.83 2.83"></path>
-                  <path d="M2 12h4"></path>
-                  <path d="M18 12h4"></path>
-                  <path d="m4.93 19.07 2.83-2.83"></path>
-                  <path d="m16.24 7.76 2.83-2.83"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Discover</h3>
-              <p className="text-muted-foreground">Explore the latest AI models across various categories</p>
+          <motion.div
+            className="absolute bottom-8 left-0 right-0 flex justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
+          >
+            <div className="flex items-center gap-2">
+              <span className="block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              <span className="block w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: '0.2s' }}></span>
+              <span className="block w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: '0.4s' }}></span>
             </div>
-            <div className="bg-card border border-border rounded-lg p-6 text-center">
-              <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Subscribe</h3>
-              <p className="text-muted-foreground">Follow AI models and get updates on new versions</p>
+          </motion.div>
+        </motion.div>
+      ) : (
+        <motion.div
+          className="flex-1 flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="text-center">
+            <div className="inline-block mb-6 rounded-full p-4 bg-secondary">
+              <svg className="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
             </div>
-            <div className="bg-card border border-border rounded-lg p-6 text-center">
-              <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
-                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Learn</h3>
-              <p className="text-muted-foreground">Access detailed information and usage guides</p>
-            </div>
+            <h2 className="text-2xl font-semibold mb-3">Loading Dashboard</h2>
+            <p className="text-muted-foreground">Please wait while we prepare your AI Scout experience...</p>
           </div>
-        </section>
-      </main>
+        </motion.div>
+      )}
 
-      <footer className="bg-background border-t border-border/40">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} AIScout. All rights reserved.</p>
-            </div>
-            <div className="flex space-x-6">
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">Privacy</a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">Terms</a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">Contact</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <div className="absolute top-4 right-4">
+        <ModeToggle />
+      </div>
     </div>
   );
 };
