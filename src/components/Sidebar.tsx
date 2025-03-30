@@ -109,11 +109,41 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           </h3>
         </div>
         
-        <SidebarItem icon={MessageSquare} label="NLP Models" count={8} to="/category/nlp-models" />
-        <SidebarItem icon={Image} label="Computer Vision" count={7} to="/category/computer-vision" />
-        <SidebarItem icon={Code2} label="Code Models" count={4} to="/category/code-models" />
-        <SidebarItem icon={FileText} label="Content Generation" count={6} to="/category/content-generation" />
-        <SidebarItem icon={Database} label="Multimodal" count={3} to="/category/multimodal" />
+        <SidebarItem 
+          icon={MessageSquare} 
+          label="NLP Models" 
+          count={8} 
+          isActive={location.pathname === '/category/nlp-models'} 
+          to="/category/nlp-models" 
+        />
+        <SidebarItem 
+          icon={Image} 
+          label="Computer Vision" 
+          count={7} 
+          isActive={location.pathname === '/category/computer-vision'} 
+          to="/category/computer-vision" 
+        />
+        <SidebarItem 
+          icon={Code2} 
+          label="Code Models" 
+          count={4} 
+          isActive={location.pathname === '/category/code-models'} 
+          to="/category/code-models" 
+        />
+        <SidebarItem 
+          icon={FileText} 
+          label="Content Generation" 
+          count={6} 
+          isActive={location.pathname === '/category/content-generation'} 
+          to="/category/content-generation" 
+        />
+        <SidebarItem 
+          icon={Database} 
+          label="Multimodal" 
+          count={3} 
+          isActive={location.pathname === '/category/multimodal'} 
+          to="/category/multimodal" 
+        />
         
         <div className="mt-auto">
           <SidebarItem icon={Settings} label="Settings" to="/settings" />

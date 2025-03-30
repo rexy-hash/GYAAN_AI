@@ -44,6 +44,20 @@ export function useModelsByCategory(category: string) {
   });
 }
 
+export function useModelsBySource(source: AIModel['source']) {
+  return useQuery({
+    queryKey: ["models", "source", source],
+    queryFn: async () => {
+      const response = await api.getModelsBySource(source);
+      if (response.error) {
+        throw new Error(response.error);
+      }
+      return response.data;
+    },
+    enabled: !!source
+  });
+}
+
 export function useSearchModels(query: string) {
   return useQuery({
     queryKey: ["models", "search", query],
