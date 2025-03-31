@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
         
         <Link to="/" className="flex items-center gap-2 font-semibold">
           <CircuitBoard className="h-6 w-6 text-primary" />
-          <span className="hidden md:inline-block">AIScout</span>
+          <span className="hidden md:inline-block">GYAAN AI</span>
         </Link>
         
         <div className="flex-1 flex justify-center px-2">

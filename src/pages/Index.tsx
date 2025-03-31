@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ModeToggle } from '@/components/ModeToggle';
 import { motion } from 'framer-motion';
-import { Robot, ArrowRight } from 'lucide-react';
+import { Bot, ArrowRight } from 'lucide-react';
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
@@ -49,7 +49,7 @@ const Index = () => {
             }}
           >
             <div className="bg-primary rounded-full p-8 relative">
-              <Robot size={100} className="text-primary-foreground" />
+              <Bot size={100} className="text-primary-foreground" />
               <motion.div 
                 className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-primary h-3 w-3 rounded-full"
                 animate={{ scale: [1, 1.5, 1] }}
@@ -64,13 +64,22 @@ const Index = () => {
           </motion.div>
 
           <motion.h1 
-            className="text-4xl md:text-5xl font-bold mb-6 text-center"
+            className="text-4xl md:text-5xl font-bold mb-2 text-center"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            Welcome to <span className="text-primary">AIScout</span>
+            Welcome to <span className="text-primary">GYAAN AI</span>
           </motion.h1>
+
+          <motion.p
+            className="text-xl mb-6 text-center text-primary/90"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            AI ka adda
+          </motion.p>
           
           <motion.div
             className="text-center max-w-xl"
@@ -118,7 +127,7 @@ const Index = () => {
               </svg>
             </div>
             <h2 className="text-2xl font-semibold mb-3">Loading Dashboard</h2>
-            <p className="text-muted-foreground">Please wait while we prepare your AI Scout experience...</p>
+            <p className="text-muted-foreground">Please wait while we prepare your GYAAN AI experience...</p>
           </div>
         </motion.div>
       )}

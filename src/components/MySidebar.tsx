@@ -19,17 +19,17 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'MessageSquare':
-        return <div className="w-4 h-4 rounded bg-aiblue-dark" />;
+        return <div className="w-4 h-4 rounded-full bg-primary" />;
       case 'Image':
-        return <div className="w-4 h-4 rounded bg-aipurple-dark" />;
+        return <div className="w-4 h-4 rounded-full bg-primary/80" />;
       case 'Code2':
-        return <div className="w-4 h-4 rounded bg-aiorange-dark" />;
+        return <div className="w-4 h-4 rounded-full bg-primary/60" />;
       case 'FileText':
-        return <div className="w-4 h-4 rounded bg-aigreen-dark" />;
+        return <div className="w-4 h-4 rounded-full bg-primary/40" />;
       case 'Database':
-        return <div className="w-4 h-4 rounded bg-aiteal-dark" />;
+        return <div className="w-4 h-4 rounded-full bg-primary/20" />;
       default:
-        return <div className="w-4 h-4 rounded bg-gray-400" />;
+        return <div className="w-4 h-4 rounded-full bg-gray-400" />;
     }
   };
 
@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
               <Button
                 variant={location.pathname === "/dashboard" ? "secondary" : "ghost"}
                 size="icon"
-                className="w-12 h-12"
+                className="w-12 h-12 rounded-full"
               >
                 <Home className="h-5 w-5" />
               </Button>
@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
               <Button
                 variant={location.pathname === "/discoveries" ? "secondary" : "ghost"}
                 size="icon"
-                className="w-12 h-12"
+                className="w-12 h-12 rounded-full"
               >
                 <Compass className="h-5 w-5" />
               </Button>
@@ -67,7 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
               <Button
                 variant={location.pathname === "/subscriptions" ? "secondary" : "ghost"}
                 size="icon"
-                className="w-12 h-12"
+                className="w-12 h-12 rounded-full"
               >
                 <Bell className="h-5 w-5" />
               </Button>
@@ -85,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           <NavLink to="/dashboard">
             <Button
               variant={location.pathname === "/dashboard" ? "secondary" : "ghost"}
-              className="w-full justify-start"
+              className="w-full justify-start rounded-full"
             >
               <Home className="mr-2 h-4 w-4" />
               Dashboard
@@ -95,17 +95,17 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           <NavLink to="/discoveries">
             <Button
               variant={location.pathname === "/discoveries" ? "secondary" : "ghost"}
-              className="w-full justify-start"
+              className="w-full justify-start rounded-full"
             >
               <Compass className="mr-2 h-4 w-4" />
-              Discover
+              Discover Me More
             </Button>
           </NavLink>
           
           <NavLink to="/subscriptions">
             <Button
               variant={location.pathname === "/subscriptions" ? "secondary" : "ghost"}
-              className="w-full justify-start"
+              className="w-full justify-start rounded-full"
             >
               <Bell className="mr-2 h-4 w-4" />
               Subscriptions
@@ -126,7 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
             <CollapsibleContent className="mt-1 space-y-1">
               {isLoading ? (
                 Array(5).fill(0).map((_, i) => (
-                  <div key={i} className="h-8 mx-3 mb-1 animate-pulse bg-muted rounded" />
+                  <div key={i} className="h-8 mx-3 mb-1 animate-pulse bg-muted rounded-full" />
                 ))
               ) : (
                 categories?.map((category) => {
@@ -138,7 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
                       key={category.id} 
                       to={`/category/${categorySlug}`}
                       className={cn(
-                        "flex items-center text-sm px-3 py-1.5 rounded-md",
+                        "flex items-center text-sm px-3 py-1.5 rounded-full",
                         isActive
                           ? "bg-secondary text-secondary-foreground"
                           : "hover:bg-secondary/50"

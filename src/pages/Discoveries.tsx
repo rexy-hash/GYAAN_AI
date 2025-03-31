@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/MySidebar';
@@ -32,36 +33,36 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
   };
 
   return (
-    <Card className="ai-card">
-      <div className={`h-1 ${model.categoryColor}`}></div>
-      <div className="p-4 pb-2">
-        <div className="flex justify-between">
-          <div>
+    <Card className="ai-card info-circle shadow-lg border-2 border-primary/20 hover:border-primary/50 transition-all">
+      <div className={`h-2 ${model.categoryColor} rounded-t-full`}></div>
+      <div className="p-5 pb-3 flex flex-col items-center text-center">
+        <div className="flex justify-between items-center w-full mb-2">
+          <div className="mx-auto">
             <h3 className="text-lg font-medium">{model.name}</h3>
-            <div className="flex items-center text-xs text-muted-foreground mt-1">
+            <div className="flex items-center justify-center text-xs text-muted-foreground mt-1">
               <SourceIcon /> {model.source} • {model.date}
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
+          <Button variant="ghost" size="icon" className="h-8 w-8 absolute top-3 right-3 rounded-full">
             <BookmarkPlus className="h-4 w-4" />
           </Button>
         </div>
       </div>
-      <div className="p-4 pt-2">
-        <p className="text-sm mb-4">{model.description}</p>
-        <div className="flex flex-wrap gap-1 mb-4">
+      <div className="p-4 pt-0 flex flex-col items-center">
+        <p className="text-sm mb-4 text-center">{model.description}</p>
+        <div className="flex flex-wrap justify-center gap-1 mb-4">
           {model.tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+            <Badge key={tag} variant="secondary" className="text-xs rounded-full">
               {tag}
             </Badge>
           ))}
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center w-full">
           <span className={`px-2 py-1 rounded-full text-xs ${model.categoryColor.replace('bg-', 'bg-').replace('-dark', '-light')} ${model.categoryColor.replace('bg-', 'text-')}`}>
             {model.category}
           </span>
           <div className="flex items-center text-sm text-muted-foreground">
-            <Star className="h-3.5 w-3.5 mr-1 fill-current text-aiorange" />
+            <Star className="h-3.5 w-3.5 mr-1 fill-current text-primary" />
             {model.stars}
           </div>
         </div>
@@ -71,28 +72,28 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
 };
 
 const ModelCardSkeleton = () => (
-  <Card className="ai-card">
-    <div className="h-1 bg-gray-200"></div>
-    <div className="p-4 pb-2">
-      <div className="flex justify-between">
-        <div className="space-y-2">
-          <Skeleton className="h-6 w-36" />
-          <Skeleton className="h-4 w-24" />
+  <Card className="ai-card info-circle">
+    <div className="h-2 bg-gray-200 rounded-t-full"></div>
+    <div className="p-5 pb-3 flex flex-col items-center">
+      <div className="flex justify-between w-full">
+        <div className="space-y-2 mx-auto">
+          <Skeleton className="h-6 w-36 rounded-full" />
+          <Skeleton className="h-4 w-24 mx-auto rounded-full" />
         </div>
-        <Skeleton className="h-8 w-8 rounded-md" />
+        <Skeleton className="h-8 w-8 rounded-full absolute top-3 right-3" />
       </div>
     </div>
-    <div className="p-4 pt-2">
-      <Skeleton className="h-4 w-full mb-2" />
-      <Skeleton className="h-4 w-3/4 mb-4" />
-      <div className="flex flex-wrap gap-1 mb-4">
+    <div className="p-4 pt-0 flex flex-col items-center">
+      <Skeleton className="h-4 w-full mb-2 rounded-full" />
+      <Skeleton className="h-4 w-3/4 mb-4 rounded-full" />
+      <div className="flex flex-wrap justify-center gap-1 mb-4">
         <Skeleton className="h-6 w-16 rounded-full" />
         <Skeleton className="h-6 w-20 rounded-full" />
         <Skeleton className="h-6 w-14 rounded-full" />
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full">
         <Skeleton className="h-6 w-24 rounded-full" />
-        <Skeleton className="h-6 w-12" />
+        <Skeleton className="h-6 w-12 rounded-full" />
       </div>
     </div>
   </Card>
@@ -106,7 +107,7 @@ const Discoveries: React.FC = () => {
   const { data: arxivModels, isLoading: isLoadingArxiv } = useModelsBySource('ArXiv');
   
   React.useEffect(() => {
-    toast.info('Discover the latest AI models', {
+    toast.info('Discover Me More', {
       description: 'Browse by platform or view all discoveries',
     });
   }, []);
@@ -121,14 +122,14 @@ const Discoveries: React.FC = () => {
         <div className="flex-1 overflow-auto p-6">
           <div className="max-w-7xl mx-auto space-y-8">
             <div>
-              <h1 className="text-3xl font-bold mb-6">AI Model Discoveries</h1>
+              <h1 className="text-3xl font-bold mb-6">Discover Me More</h1>
               
               <Tabs defaultValue="all" className="w-full">
-                <TabsList className="mb-6">
-                  <TabsTrigger value="all">All Models</TabsTrigger>
-                  <TabsTrigger value="github">GitHub</TabsTrigger>
-                  <TabsTrigger value="huggingface">HuggingFace</TabsTrigger>
-                  <TabsTrigger value="arxiv">ArXiv</TabsTrigger>
+                <TabsList className="mb-6 rounded-full">
+                  <TabsTrigger value="all" className="rounded-full">All Models</TabsTrigger>
+                  <TabsTrigger value="github" className="rounded-full">GitHub</TabsTrigger>
+                  <TabsTrigger value="huggingface" className="rounded-full">HuggingFace</TabsTrigger>
+                  <TabsTrigger value="arxiv" className="rounded-full">ArXiv</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="all">

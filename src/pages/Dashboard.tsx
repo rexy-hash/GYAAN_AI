@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/MySidebar';
@@ -11,8 +12,8 @@ const Dashboard: React.FC = () => {
   
   React.useEffect(() => {
     // Show welcome toast when dashboard loads
-    toast.success('Welcome to AIScout', {
-      description: 'Discover and track the latest AI models and tools',
+    toast.success('Welcome to GYAAN AI', {
+      description: 'AI ka adda - Discover and track the latest AI models and tools',
     });
   }, []);
   
