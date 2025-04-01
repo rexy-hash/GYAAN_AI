@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { AIModel } from "@/types/api";
@@ -37,11 +36,9 @@ export function useModelsByCategory(category: string) {
   return useQuery({
     queryKey: ["models", "category", category],
     queryFn: async () => {
-      // Convert route format "Category-Name" to API format "Category Name"
-      const formattedCategory = category;
-      console.log("useModelsByCategory - calling API with:", formattedCategory);
+      console.log("useModelsByCategory - calling API with:", category);
       
-      const response = await api.getModelsByCategory(formattedCategory);
+      const response = await api.getModelsByCategory(category);
       if (response.error) {
         throw new Error(response.error);
       }

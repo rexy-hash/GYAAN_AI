@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/MySidebar';
@@ -133,12 +134,25 @@ const CategoryView = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
   const { categoryId } = useParams();
   
+  // Convert kebab-case URL parameter to Title Case for the API
   const formattedCategoryName = categoryId ? 
     categoryId.split('-').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ') : '';
+    
+  // Map URL slug to exact category name as in the API
+  const categoryMapping = {
+    'nlp-models': 'NLP Models',
+    'computer-vision': 'Computer Vision',
+    'code-models': 'Code Models',
+    'content-generation': 'Content Generation',
+    'multimodal': 'Multimodal'
+  };
   
-  const apiCategoryName = formattedCategoryName;
+  // Use the mapped category name or fallback to the formatted name
+  const apiCategoryName = categoryId && categoryMapping[categoryId] 
+    ? categoryMapping[categoryId] 
+    : formattedCategoryName;
   
   const { data: models, isLoading, error } = useModelsByCategory(apiCategoryName);
 
@@ -159,7 +173,7 @@ const CategoryView = () => {
         <div className="flex-1 overflow-auto p-6">
           <div className="max-w-7xl mx-auto space-y-8">
             <div>
-              <h1 className="text-3xl font-bold mb-6">{formattedCategoryName} Models</h1>
+              <h1 className="text-3xl font-bold mb-6">{apiCategoryName} Models</h1>
               
               {error ? (
                 <div className="p-4 border border-red-300 bg-red-50 rounded-md text-red-600">
@@ -175,7 +189,7 @@ const CategoryView = () => {
                     ))
                   ) : (
                     <div className="col-span-1 md:col-span-2 lg:col-span-3">
-                      <EmptyState categoryName={formattedCategoryName} />
+                      <EmptyState categoryName={apiCategoryName} />
                     </div>
                   )}
                 </div>
