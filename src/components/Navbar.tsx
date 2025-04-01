@@ -51,7 +51,10 @@ const Navbar: React.FC = () => {
         
         <Link to="/" className="flex items-center gap-2 font-semibold">
           <CircuitBoard className="h-6 w-6 text-primary" />
-          <span className="hidden md:inline-block">GYAAN AI</span>
+          <div className="hidden md:block">
+            <div className="text-lg font-bold">GYAAN AI</div>
+            <div className="text-xs text-muted-foreground -mt-1">AI ka adda</div>
+          </div>
         </Link>
         
         <div className="flex-1 flex justify-center px-2">
@@ -79,7 +82,7 @@ const Navbar: React.FC = () => {
               </DialogHeader>
               <div className="flex flex-col gap-4 py-4">
                 {alerts.map((alert) => (
-                  <div key={alert.id} className="flex items-start gap-4 rounded-lg border p-4">
+                  <div key={alert.id} className="flex items-start gap-4 rounded-full border p-4">
                     <div className={cn(
                       "mt-0.5 rounded-full p-1",
                       alert.read ? "bg-muted" : "bg-primary"
@@ -105,7 +108,7 @@ const Navbar: React.FC = () => {
                   type="button"
                   variant="secondary"
                   size="sm"
-                  className="mt-2 w-full"
+                  className="mt-2 w-full rounded-full"
                 >
                   Mark all as read
                 </Button>

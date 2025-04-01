@@ -92,7 +92,7 @@ const Index = () => {
             </p>
             
             <div className="flex justify-center">
-              <Button onClick={skipIntro} className="flex items-center gap-2">
+              <Button onClick={skipIntro} className="flex items-center gap-2 rounded-full">
                 Skip intro <ArrowRight size={16} />
               </Button>
             </div>

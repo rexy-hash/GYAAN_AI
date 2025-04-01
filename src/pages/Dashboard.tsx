@@ -33,7 +33,9 @@ const Dashboard: React.FC = () => {
             
             <div>
               <h2 className="text-2xl font-bold mb-4">AI Model Discovery Trends</h2>
-              <TrendChart />
+              <div className="rounded-3xl overflow-hidden">
+                <TrendChart />
+              </div>
             </div>
             
             <div>
