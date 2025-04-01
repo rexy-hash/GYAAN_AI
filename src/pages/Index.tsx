@@ -4,26 +4,43 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ModeToggle } from '@/components/ModeToggle';
 import { motion } from 'framer-motion';
-import { Bot, ArrowRight, Brain, Zap, ChevronRight } from 'lucide-react';
+import { Bot, ArrowRight, Brain, Zap, ChevronDown, LogIn } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Index = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Auto-redirect after 8 seconds
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-      // Wait for exit animation to complete
-      setTimeout(() => navigate('/dashboard'), 1000);
-    }, 8000);
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    // Simulate login process
+    setTimeout(() => {
+      toast.success("Login successful!", {
+        description: "Welcome to GYAAN AI",
+      });
+      setIsLoading(false);
+      navigate('/dashboard');
+    }, 1500);
+  };
 
-    return () => clearTimeout(timer);
-  }, [navigate]);
-
-  const skipIntro = () => {
-    setShowIntro(false);
-    setTimeout(() => navigate('/dashboard'), 500);
+  const scrollToDashboard = () => {
+    // Smooth scroll to dashboard section
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    });
+    
+    // After scrolling is complete, navigate to dashboard
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 1000);
   };
 
   return (
@@ -52,130 +69,125 @@ const Index = () => {
         </div>
       </div>
 
-      {showIntro ? (
-        <motion.div
-          className="flex-1 flex flex-col items-center justify-center px-4 py-10 relative z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          {/* Floating particles */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(12)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-3 h-3 rounded-full bg-primary/30"
-                initial={{
-                  x: Math.random() * 100 + '%',
-                  y: Math.random() * 100 + '%',
-                  scale: Math.random() * 0.5 + 0.5
-                }}
-                animate={{
-                  x: [
-                    Math.random() * 100 + '%',
-                    Math.random() * 100 + '%',
-                    Math.random() * 100 + '%'
-                  ],
-                  y: [
-                    Math.random() * 100 + '%',
-                    Math.random() * 100 + '%',
-                    Math.random() * 100 + '%'
-                  ]
-                }}
-                transition={{
-                  duration: 15,
-                  repeat: Infinity,
-                  repeatType: 'reverse'
-                }}
-              />
-            ))}
-          </div>
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-10 relative z-10">
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-3 h-3 rounded-full bg-primary/30"
+              initial={{
+                x: Math.random() * 100 + '%',
+                y: Math.random() * 100 + '%',
+                scale: Math.random() * 0.5 + 0.5
+              }}
+              animate={{
+                x: [
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%'
+                ],
+                y: [
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%'
+                ]
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                repeatType: 'reverse'
+              }}
+            />
+          ))}
+        </div>
 
-          {/* AI Brain Logo Animation */}
-          <motion.div
-            className="relative mb-8 z-10"
-            animate={{ 
-              y: [0, -15, 0],
-              rotate: [0, -5, 0, 5, 0]
-            }}
-            transition={{ 
-              duration: 4,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-          >
-            <div className="relative">
-              <div className="bg-gradient-to-br from-primary to-primary/70 rounded-full p-8 relative shadow-lg shadow-primary/20">
-                <Brain size={100} className="text-primary-foreground" />
-                {/* Synapse connections */}
-                {[...Array(5)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 bg-primary-foreground rounded-full"
-                    style={{
-                      top: `${30 + Math.random() * 40}%`,
-                      left: `${30 + Math.random() * 40}%`
-                    }}
-                    animate={{ 
-                      opacity: [0, 1, 0],
-                      scale: [0, 1.5, 0]
-                    }}
-                    transition={{ 
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.4
-                    }}
-                  />
-                ))}
-              </div>
-              <motion.div 
-                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-primary h-3 w-3 rounded-full"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 1, repeat: Infinity }}
-              />
-              {/* Pulsing rings around the brain */}
-              {[...Array(3)].map((_, i) => (
+        {/* AI Brain Logo Animation */}
+        <motion.div
+          className="relative mb-8 z-10"
+          animate={{ 
+            y: [0, -15, 0],
+            rotate: [0, -5, 0, 5, 0]
+          }}
+          transition={{ 
+            duration: 4,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        >
+          <div className="relative">
+            <div className="bg-gradient-to-br from-primary to-primary/70 rounded-full p-8 relative shadow-lg shadow-primary/20">
+              <Brain size={100} className="text-primary-foreground" />
+              {/* Synapse connections */}
+              {[...Array(5)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute inset-0 rounded-full border border-primary/30"
-                  animate={{ scale: [1, 1.8], opacity: [1, 0] }}
+                  className="absolute w-1 h-1 bg-primary-foreground rounded-full"
+                  style={{
+                    top: `${30 + Math.random() * 40}%`,
+                    left: `${30 + Math.random() * 40}%`
+                  }}
+                  animate={{ 
+                    opacity: [0, 1, 0],
+                    scale: [0, 1.5, 0]
+                  }}
                   transition={{ 
-                    duration: 2, 
-                    repeat: Infinity, 
-                    delay: i * 0.6,
-                    ease: "easeOut"
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.4
                   }}
                 />
               ))}
             </div>
             <motion.div 
-              className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-full h-6 rounded-full bg-black/20 blur-md"
-              animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.8, 0.6] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-primary h-3 w-3 rounded-full"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 1, repeat: Infinity }}
             />
-          </motion.div>
+            {/* Pulsing rings around the brain */}
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute inset-0 rounded-full border border-primary/30"
+                animate={{ scale: [1, 1.8], opacity: [1, 0] }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  delay: i * 0.6,
+                  ease: "easeOut"
+                }}
+              />
+            ))}
+          </div>
+          <motion.div 
+            className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-full h-6 rounded-full bg-black/20 blur-md"
+            animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.8, 0.6] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </motion.div>
 
-          <motion.h1 
-            className="text-4xl md:text-6xl font-bold mb-2 text-center bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            Welcome to <span className="text-primary">GYAAN AI</span>
-          </motion.h1>
+        <motion.h1 
+          className="text-4xl md:text-6xl font-bold mb-2 text-center bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          Welcome to <span className="text-primary">GYAAN AI</span>
+        </motion.h1>
 
-          <motion.p
-            className="text-xl md:text-2xl mb-6 text-center text-primary/90 font-medium"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            AI ka adda
-          </motion.p>
-          
+        <motion.p
+          className="text-xl md:text-2xl mb-6 text-center text-primary/90 font-medium"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          AI ka adda
+        </motion.p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full z-10">
+          {/* Left side - Features */}
           <motion.div
-            className="text-center max-w-xl z-10"
+            className="text-center md:text-left"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
@@ -210,46 +222,107 @@ const Index = () => {
               ))}
             </motion.div>
             
-            <div className="flex justify-center">
-              <Button onClick={skipIntro} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary/80 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
-                Skip intro <ArrowRight size={16} />
+            <div className="flex justify-center md:justify-start">
+              <Button 
+                onClick={scrollToDashboard} 
+                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary/80 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all"
+              >
+                Explore dashboard <ChevronDown size={16} />
               </Button>
             </div>
           </motion.div>
-
+          
+          {/* Right side - Login form */}
           <motion.div
-            className="absolute bottom-8 left-0 right-0 flex justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
+            initial={{ x: 50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="flex justify-center md:justify-end"
           >
-            <div className="flex items-center gap-2">
-              <span className="block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-              <span className="block w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: '0.2s' }}></span>
-              <span className="block w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: '0.4s' }}></span>
-            </div>
+            <Card className="w-full max-w-md bg-card/50 backdrop-blur-md border border-primary/10">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold text-center">Sign In</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-sm font-medium">Email</label>
+                    <div className="relative">
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="your.email@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="bg-background/50"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="password" className="text-sm font-medium">Password</label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="bg-background/50"
+                      />
+                    </div>
+                  </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full rounded-full" 
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+                        Signing in...
+                      </>
+                    ) : (
+                      <>
+                        <LogIn className="mr-2 h-4 w-4" />
+                        Sign in
+                      </>
+                    )}
+                  </Button>
+                  <div className="text-center text-sm">
+                    <span>Don't have an account? </span>
+                    <Button 
+                      variant="link" 
+                      className="p-0 h-auto"
+                      onClick={() => navigate('/signup')}
+                    >
+                      Sign up
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
           </motion.div>
-        </motion.div>
-      ) : (
+        </div>
+
+        {/* Down arrow animation */}
         <motion.div
-          className="flex-1 flex items-center justify-center"
+          className="absolute bottom-8 left-0 right-0 flex justify-center"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          animate={{ 
+            opacity: [0.5, 1, 0.5],
+            y: [0, 10, 0] 
+          }}
+          transition={{ 
+            duration: 2, 
+            repeat: Infinity,
+            repeatType: "reverse" 
+          }}
         >
-          <div className="text-center">
-            <div className="inline-block mb-6 rounded-full p-4 bg-gradient-to-br from-primary/20 to-primary/5">
-              <svg className="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            </div>
-            <h2 className="text-2xl font-semibold mb-3">Loading Dashboard</h2>
-            <p className="text-muted-foreground">Please wait while we prepare your GYAAN AI experience...</p>
-          </div>
+          <ChevronDown size={36} className="text-primary" />
         </motion.div>
-      )}
+      </div>
 
       <div className="absolute top-4 right-4 z-20">
         <ModeToggle />

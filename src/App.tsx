@@ -37,7 +37,7 @@ const App = () => (
             <Route path="/discoveries" element={<Discoveries />} />
             <Route path="/subscriptions" element={<Subscriptions />} />
             <Route path="/category/:categoryId" element={<CategoryView />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Navigate to="/" replace />} />
             <Route path="/signup" element={<Signup />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
