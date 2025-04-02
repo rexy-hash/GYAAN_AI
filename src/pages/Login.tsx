@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from 'sonner';
 import { Eye, EyeOff, LogIn, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { ModeToggle } from '@/components/ModeToggle';
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -19,8 +21,7 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const { login, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   
   const form = useForm<LoginFormValues>({
@@ -36,29 +37,7 @@ const Login: React.FC = () => {
   };
 
   const onSubmit = async (values: LoginFormValues) => {
-    setIsLoading(true);
-    
-    try {
-      // Mock login - replace with actual login logic
-      console.log("Login attempt with:", values);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast.success("Login successful!", {
-        description: "Welcome back to AIScout",
-      });
-      
-      // Redirect to dashboard
-      navigate('/dashboard');
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Login failed", {
-        description: "Please check your credentials and try again",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    await login(values.email, values.password);
   };
 
   return (
@@ -151,12 +130,12 @@ const Login: React.FC = () => {
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
               <span>Don't have an account? </span>
-              <button 
-                onClick={() => navigate('/signup')}
+              <Link 
+                to='/signup'
                 className="text-primary underline-offset-4 hover:underline font-medium"
               >
                 Sign up
-              </button>
+              </Link>
             </div>
             
             <div className="relative">
@@ -196,6 +175,10 @@ const Login: React.FC = () => {
             </Button>
           </CardFooter>
         </Card>
+      </div>
+
+      <div className="absolute top-4 right-4">
+        <ModeToggle />
       </div>
 
       <footer className="py-6 text-center text-sm text-muted-foreground">

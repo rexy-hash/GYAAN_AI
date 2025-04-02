@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Bell, CircuitBoard, Menu, LogIn } from 'lucide-react';
+import { Bell, CircuitBoard, Menu, LogIn, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import SearchBar from './SearchBar';
 import { ModeToggle } from './ModeToggle';
+import { useAuth } from '@/contexts/AuthContext';
 
 const alerts = [
   {
@@ -37,6 +38,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
   
   return (
     <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -62,12 +64,19 @@ const Navbar: React.FC = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <Link to="/login" className="hidden md:flex">
-            <Button variant="ghost" size="sm">
-              <LogIn className="h-4 w-4 mr-2" />
-              Login
+          {isAuthenticated ? (
+            <Button variant="ghost" size="sm" onClick={logout}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
             </Button>
-          </Link>
+          ) : (
+            <Link to="/login" className="hidden md:flex">
+              <Button variant="ghost" size="sm">
+                <LogIn className="h-4 w-4 mr-2" />
+                Login
+              </Button>
+            </Link>
+          )}
 
           <ModeToggle />
           
