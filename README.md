@@ -14,3 +14,5 @@ State Management: React Query
 UI Library: ShadCN / TailwindCSS
 Backend (API): RESTful mock endpoints (can be hooked with real API)
 Build Tool: Vite
+# GYAAN_AI
+# GYAAN_AI
