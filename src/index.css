@@ -43,6 +43,20 @@
     --sidebar-accent-foreground: 142 50% 98%;
     --sidebar-border: 142 50% 15%;
     --sidebar-ring: 142 70% 50%;
+    
+    /* Custom vibrant colors */
+    --ai-purple: 265 89% 78%;
+    --ai-blue: 217 91% 60%;
+    --ai-cyan: 186 100% 69%;
+    --ai-green: 142 76% 66%;
+    --ai-yellow: 41 100% 70%;
+    --ai-orange: 26 100% 70%;
+    --ai-pink: 330 95% 75%;
+    --ai-magenta: 300 100% 76%;
+    
+    /* Gradient colors */
+    --gradient-start: 142 85% 54%;
+    --gradient-end: 186 100% 69%;
   }
 
   .dark {
@@ -82,6 +96,20 @@
     --sidebar-accent-foreground: 142 50% 98%;
     --sidebar-border: 142 50% 15%;
     --sidebar-ring: 142 70% 50%;
+    
+    /* Custom vibrant colors */
+    --ai-purple: 265 89% 78%;
+    --ai-blue: 217 91% 60%;
+    --ai-cyan: 186 100% 69%;
+    --ai-green: 142 76% 66%;
+    --ai-yellow: 41 100% 70%;
+    --ai-orange: 26 100% 70%;
+    --ai-pink: 330 95% 75%;
+    --ai-magenta: 300 100% 76%;
+    
+    /* Gradient colors */
+    --gradient-start: 142 85% 54%;
+    --gradient-end: 186 100% 69%;
   }
 }
 
@@ -140,5 +168,66 @@
   
   .card-glow:hover::after {
     @apply opacity-100;
+  }
+  
+  /* New vibrant UI classes */
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--ai-cyan))] to-[hsl(var(--ai-green))];
+  }
+  
+  .gradient-border {
+    @apply relative;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-xl p-[2px] bg-gradient-to-r from-[hsl(var(--ai-cyan))] to-[hsl(var(--ai-green))] -z-10;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+  
+  .ai-card-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-lg;
+  }
+  
+  .pulse-animation {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+  
+  .button-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .button-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s;
+    opacity: 0;
+  }
+  
+  .button-shine:hover::after {
+    left: 100%;
+    opacity: 1;
   }
 }

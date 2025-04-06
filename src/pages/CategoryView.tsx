@@ -7,7 +7,7 @@ import { useModelsByCategory } from '@/hooks/useModels';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { BookmarkPlus, Github, ArrowUpRight, FileText, ExternalLink, Star, Bell, BellOff } from 'lucide-react';
+import { BookmarkPlus, Github, ArrowUpRight, FileText, ExternalLink, Star, Bell, BellOff, Rocket } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useModelSubscription } from '@/hooks/useModelSubscription';
@@ -40,15 +40,26 @@ const ModelCard = ({ model }) => {
     }
   };
 
+  const handleExplore = () => {
+    // Open the model URL in a new tab
+    window.open(`https://example.com/models/${model.id}`, '_blank');
+    toast.success(`Exploring ${model.name}`, {
+      description: 'Opening model details in a new tab',
+    });
+  };
+
   return (
-    <Card className="ai-card">
+    <Card className="ai-card group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30">
       <div className={`h-1 ${model.categoryColor}`}></div>
       <div className="p-4 pb-2">
         <div className="flex justify-between">
           <div>
-            <h3 className="text-lg font-medium">{model.name}</h3>
+            <h3 className="text-lg font-medium group-hover:text-primary transition-colors">{model.name}</h3>
             <div className="flex items-center text-xs text-muted-foreground mt-1">
               <SourceIcon /> {model.source} • {model.date}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1 italic">
+              Developed by {model.company || "AI Research Team"}
             </div>
           </div>
           <div className="flex gap-2">
@@ -79,7 +90,7 @@ const ModelCard = ({ model }) => {
             </Badge>
           ))}
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-4">
           <span className={`px-2 py-1 rounded-full text-xs ${model.categoryColor.replace('bg-', 'bg-').replace('-dark', '-light')} ${model.categoryColor.replace('bg-', 'text-')}`}>
             {model.category}
           </span>
@@ -88,6 +99,12 @@ const ModelCard = ({ model }) => {
             {model.stars}
           </div>
         </div>
+        <Button 
+          onClick={handleExplore} 
+          className="w-full group-hover:bg-gradient-to-r from-primary to-accent transition-all"
+        >
+          <Rocket className="h-4 w-4 mr-2" /> Explore Now
+        </Button>
       </div>
     </Card>
   );

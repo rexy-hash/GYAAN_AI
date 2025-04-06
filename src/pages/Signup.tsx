@@ -47,12 +47,16 @@ const Signup: React.FC = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      // Show a prominent success message
       toast.success("Account created successfully!", {
-        description: "Welcome to AIScout",
+        description: `Welcome to AIScout, ${values.name}!`,
+        duration: 5000,
       });
       
       // Redirect to dashboard
-      navigate('/dashboard');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 500);
     } catch (error) {
       console.error("Signup error:", error);
       toast.error("Signup failed", {

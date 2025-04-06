@@ -33,7 +33,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
     // Open the model URL in a new tab
     window.open(`https://example.com/models/${model.id}`, '_blank');
     toast.success(`Exploring ${model.name}`, {
-      description: 'Opening model in a new tab',
+      description: 'Opening model details in a new tab',
     });
   };
 
@@ -47,6 +47,9 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
             <CardDescription className="flex items-center text-xs mt-1">
               <SourceIcon /> {model.source} • {model.date}
             </CardDescription>
+            <div className="text-xs text-muted-foreground mt-1 italic">
+              Developed by {model.company || "AI Research Team"}
+            </div>
           </div>
           <Button variant="ghost" size="icon" className="h-8 w-8">
             <BookmarkPlus className="h-4 w-4" />
