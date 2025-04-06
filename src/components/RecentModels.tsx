@@ -3,11 +3,12 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { BookmarkPlus, Github, Star, ExternalLink, ArrowUpRight, FileText } from 'lucide-react';
+import { BookmarkPlus, Github, Star, ExternalLink, ArrowUpRight, FileText, Rocket } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLatestModels } from '@/hooks/useModels';
 import { AIModel } from '@/types/api';
 import { Skeleton } from './ui/skeleton';
+import { toast } from 'sonner';
 
 interface ModelCardProps {
   model: AIModel;
@@ -28,13 +29,21 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
     }
   };
 
+  const handleExplore = () => {
+    // Open the model URL in a new tab
+    window.open(`https://example.com/models/${model.id}`, '_blank');
+    toast.success(`Exploring ${model.name}`, {
+      description: 'Opening model in a new tab',
+    });
+  };
+
   return (
-    <Card className="ai-card">
-      <div className={`h-1 ${model.categoryColor}`}></div>
+    <Card className="ai-card overflow-hidden group hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/30">
+      <div className={`h-2 ${model.categoryColor}`}></div>
       <CardHeader className="pb-2">
         <div className="flex justify-between">
           <div>
-            <CardTitle className="text-lg">{model.name}</CardTitle>
+            <CardTitle className="text-lg group-hover:text-primary transition-colors">{model.name}</CardTitle>
             <CardDescription className="flex items-center text-xs mt-1">
               <SourceIcon /> {model.source} • {model.date}
             </CardDescription>
@@ -48,12 +57,12 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
         <p className="text-sm mb-4">{model.description}</p>
         <div className="flex flex-wrap gap-1 mb-4">
           {model.tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+            <Badge key={tag} variant="secondary" className="text-xs bg-secondary/80 hover:bg-secondary">
               {tag}
             </Badge>
           ))}
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-3">
           <span className={`tag ${model.categoryColor.replace('bg-', 'bg-').replace('-dark', '-light')} ${model.categoryColor.replace('bg-', 'text-')}`}>
             {model.category}
           </span>
@@ -62,6 +71,12 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
             {model.stars}
           </div>
         </div>
+        <Button 
+          onClick={handleExplore} 
+          className="w-full group-hover:bg-gradient-to-r from-primary to-accent transition-all"
+        >
+          <Rocket className="h-4 w-4 mr-2" /> Explore Now
+        </Button>
       </CardContent>
     </Card>
   );

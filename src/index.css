@@ -14,7 +14,7 @@
     --popover: 0 0% 10%;
     --popover-foreground: 142 50% 98%;
 
-    --primary: 142 70% 50%;
+    --primary: 142 85% 54%;
     --primary-foreground: 0 0% 10%;
 
     --secondary: 0 0% 15%;
@@ -23,7 +23,7 @@
     --muted: 0 0% 15%;
     --muted-foreground: 142 30% 70%;
 
-    --accent: 142 70% 40%;
+    --accent: 160 80% 45%;
     --accent-foreground: 0 0% 10%;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,7 +37,7 @@
 
     --sidebar-background: 142 50% 10%;
     --sidebar-foreground: 142 50% 98%;
-    --sidebar-primary: 142 70% 50%;
+    --sidebar-primary: 142 85% 50%;
     --sidebar-primary-foreground: 0 0% 10%;
     --sidebar-accent: 142 50% 15%;
     --sidebar-accent-foreground: 142 50% 98%;
@@ -55,7 +55,7 @@
     --popover: 0 0% 10%;
     --popover-foreground: 142 50% 98%;
 
-    --primary: 142 70% 50%;
+    --primary: 142 85% 54%;
     --primary-foreground: 0 0% 10%;
 
     --secondary: 0 0% 15%;
@@ -64,7 +64,7 @@
     --muted: 0 0% 15%;
     --muted-foreground: 142 30% 70%;
 
-    --accent: 142 70% 40%;
+    --accent: 160 80% 45%;
     --accent-foreground: 0 0% 10%;
 
     --destructive: 0 62.8% 30.6%;
@@ -76,7 +76,7 @@
     
     --sidebar-background: 142 50% 10%;
     --sidebar-foreground: 142 50% 98%;
-    --sidebar-primary: 142 70% 50%;
+    --sidebar-primary: 142 85% 50%;
     --sidebar-primary-foreground: 0 0% 10%;
     --sidebar-accent: 142 50% 15%;
     --sidebar-accent-foreground: 142 50% 98%;
@@ -97,7 +97,7 @@
 
 @layer components {
   .ai-card {
-    @apply bg-card border rounded-full shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden;
+    @apply bg-card border rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden;
   }
   
   .ai-card-highlight {
@@ -123,5 +123,22 @@
 
   .info-circle {
     @apply rounded-full overflow-hidden flex flex-col items-center justify-center aspect-square;
+  }
+  
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary text-primary-foreground transition-all;
+  }
+  
+  .card-glow {
+    @apply relative;
+  }
+  
+  .card-glow::after {
+    content: '';
+    @apply absolute inset-0 rounded-xl bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 transition-opacity duration-300 -z-10 blur-xl;
+  }
+  
+  .card-glow:hover::after {
+    @apply opacity-100;
   }
 }
