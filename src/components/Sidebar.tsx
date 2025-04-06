@@ -79,7 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           <div className="flex items-center justify-center h-8 w-8 rounded-md bg-aiblue mr-3">
             <Eye className="h-5 w-5 text-white" />
           </div>
-          <h2 className="text-xl font-bold text-sidebar-foreground">AIScout</h2>
+          <h2 className="text-xl font-bold text-sidebar-foreground">GYAAN AI</h2>
         </div>
       )}
       

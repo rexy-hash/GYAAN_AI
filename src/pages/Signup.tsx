@@ -47,16 +47,22 @@ const Signup: React.FC = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      // Store user data in localStorage (mock authentication)
+      const mockUser = {
+        id: '1',
+        email: values.email,
+        name: values.name
+      };
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      
       // Show a prominent success message
       toast.success("Account created successfully!", {
-        description: `Welcome to AIScout, ${values.name}!`,
+        description: `Welcome to GYAAN AI, ${values.name}!`,
         duration: 5000,
       });
       
-      // Redirect to dashboard
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 500);
+      // Redirect to dashboard immediately
+      navigate('/dashboard');
     } catch (error) {
       console.error("Signup error:", error);
       toast.error("Signup failed", {
@@ -77,7 +83,7 @@ const Signup: React.FC = () => {
             </div>
             <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
             <CardDescription>
-              Sign up to get started with AIScout
+              Sign up to get started with GYAAN AI
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -226,7 +232,7 @@ const Signup: React.FC = () => {
       </div>
 
       <footer className="py-6 text-center text-sm text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} AIScout. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} GYAAN AI. All rights reserved.</p>
       </footer>
     </div>
   );
