@@ -3,6 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { AIModel } from "@/types/api";
 
+// Data by source doesn't change frequently
+const SOURCE_DATA_STALE_TIME = 10 * 60 * 1000; // 10 minutes
+
 export function useModelsBySource(source: AIModel['source']) {
   return useQuery({
     queryKey: ["models", "source", source],
@@ -13,6 +16,7 @@ export function useModelsBySource(source: AIModel['source']) {
       }
       return response.data;
     },
-    enabled: !!source
+    enabled: !!source,
+    staleTime: SOURCE_DATA_STALE_TIME
   });
 }

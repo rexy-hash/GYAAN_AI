@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { 
   Home, 
   BarChart2, 
@@ -25,7 +25,8 @@ interface SidebarItemProps {
   to: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ 
+// Memoize SidebarItem to prevent unnecessary re-renders
+const SidebarItem = memo<SidebarItemProps>(({ 
   icon: Icon, 
   label, 
   isActive = false,
@@ -56,13 +57,17 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       )}
     </Link>
   );
-};
+});
+
+// Add display name for better debugging
+SidebarItem.displayName = 'SidebarItem';
 
 interface SidebarProps {
   collapsed?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
+// Memoize the entire Sidebar component to prevent unnecessary re-renders
+const Sidebar = memo<SidebarProps>(({ collapsed = false }) => {
   const location = useLocation();
   
   return (
@@ -151,6 +156,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
       </div>
     </div>
   );
-};
+});
+
+// Add display name for better debugging
+Sidebar.displayName = 'Sidebar';
 
 export default Sidebar;

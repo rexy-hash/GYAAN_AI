@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { useTrendData } from '@/hooks/useTrendData';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Skeleton } from './ui/skeleton';
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+// Memoize the tooltip component to prevent unnecessary renders
+const CustomTooltip = React.memo(({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border shadow-sm rounded-md">
@@ -18,13 +19,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   }
 
   return null;
-};
+});
 
-const TrendChart: React.FC = () => {
+CustomTooltip.displayName = 'CustomTooltip';
+
+// Using memo to prevent unnecessary re-renders
+const TrendChart: React.FC = React.memo(() => {
   const { data: trendData, isLoading, error } = useTrendData();
 
   // Format dates for better display
-  const formattedData = React.useMemo(() => {
+  const formattedData = useMemo(() => {
     if (!trendData) return [];
     
     return trendData.map(item => ({
@@ -101,6 +105,8 @@ const TrendChart: React.FC = () => {
       </CardContent>
     </Card>
   );
-};
+});
+
+TrendChart.displayName = 'TrendChart';
 
 export default TrendChart;
