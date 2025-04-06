@@ -124,3 +124,18 @@
     opacity: 0;
   }
 }
+
+/* Added new styles for more vibrant design */
+.ai-card {
+  transition: all 0.3s ease;
+}
+
+.ai-card:hover {
+  transform: translateY(-8px);
+}
+
+.ai-card:hover .shine-effect::after {
+  animation: shine 2s ease-in-out;
+  opacity: 1;
+}
+

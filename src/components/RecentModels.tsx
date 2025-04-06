@@ -30,8 +30,8 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
   };
 
   const handleExplore = () => {
-    // Open the model URL in a new tab
-    window.open(`https://example.com/models/${model.id}`, '_blank');
+    // Open the model's actual website in a new tab
+    window.open(model.sourceUrl, '_blank');
     toast.success(`Exploring ${model.name}`, {
       description: 'Opening model details in a new tab',
     });
@@ -48,7 +48,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
               <SourceIcon /> {model.source} • {model.date}
             </CardDescription>
             <div className="text-xs text-muted-foreground mt-1 italic">
-              Developed by {model.company || "AI Research Team"}
+              Developed by {model.sourceUrl.split('//')[1].split('.')[0].charAt(0).toUpperCase() + model.sourceUrl.split('//')[1].split('.')[0].slice(1)}
             </div>
           </div>
           <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -66,7 +66,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
           ))}
         </div>
         <div className="flex justify-between items-center mb-3">
-          <span className={`tag ${model.categoryColor.replace('bg-', 'bg-').replace('-dark', '-light')} ${model.categoryColor.replace('bg-', 'text-')}`}>
+          <span className={`px-2 py-1 rounded-full text-xs ${model.categoryColor.replace('bg-', 'bg-').replace('-dark', '-light')} ${model.categoryColor.replace('bg-', 'text-')}`}>
             {model.category}
           </span>
           <div className="flex items-center text-sm text-muted-foreground">
@@ -76,7 +76,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
         </div>
         <Button 
           onClick={handleExplore} 
-          className="w-full group-hover:bg-gradient-to-r from-primary to-accent transition-all"
+          className="w-full group-hover:bg-gradient-to-r from-primary to-accent transition-all shine-effect"
         >
           <Rocket className="h-4 w-4 mr-2" /> Explore Now
         </Button>

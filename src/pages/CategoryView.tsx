@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/MySidebar';
@@ -41,8 +40,7 @@ const ModelCard = ({ model }) => {
   };
 
   const handleExplore = () => {
-    // Open the model URL in a new tab
-    window.open(`https://example.com/models/${model.id}`, '_blank');
+    window.open(model.sourceUrl, '_blank');
     toast.success(`Exploring ${model.name}`, {
       description: 'Opening model details in a new tab',
     });
@@ -59,7 +57,7 @@ const ModelCard = ({ model }) => {
               <SourceIcon /> {model.source} • {model.date}
             </div>
             <div className="text-xs text-muted-foreground mt-1 italic">
-              Developed by {model.company || "AI Research Team"}
+              Developed by {model.sourceUrl.split('//')[1].split('.')[0].charAt(0).toUpperCase() + model.sourceUrl.split('//')[1].split('.')[0].slice(1)}
             </div>
           </div>
           <div className="flex gap-2">
@@ -101,7 +99,7 @@ const ModelCard = ({ model }) => {
         </div>
         <Button 
           onClick={handleExplore} 
-          className="w-full group-hover:bg-gradient-to-r from-primary to-accent transition-all"
+          className="w-full group-hover:bg-gradient-to-r from-primary to-accent transition-all shine-effect"
         >
           <Rocket className="h-4 w-4 mr-2" /> Explore Now
         </Button>
@@ -151,13 +149,11 @@ const CategoryView = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
   const { categoryId } = useParams();
   
-  // Convert kebab-case URL parameter to Title Case for the API
   const formattedCategoryName = categoryId ? 
     categoryId.split('-').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ') : '';
     
-  // Map URL slug to exact category name as in the API
   const categoryMapping = {
     'nlp-models': 'NLP Models',
     'computer-vision': 'Computer Vision',
@@ -166,7 +162,6 @@ const CategoryView = () => {
     'multimodal': 'Multimodal'
   };
   
-  // Use the mapped category name or fallback to the formatted name
   const apiCategoryName = categoryId && categoryMapping[categoryId] 
     ? categoryMapping[categoryId] 
     : formattedCategoryName;
